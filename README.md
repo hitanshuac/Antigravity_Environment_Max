@@ -19,7 +19,7 @@ graph TD
     A[Test Suite Trigger] --> B{Evaluation Type}
     B -->|Deterministic| C[Code Integrity]
     C --> D[Pydantic Validation DLQ]
-    C --> E[DuckDB Idempotency]
+    C --> E[DuckDB Safe Upserts]
     B -->|Probabilistic| G[AI Behavior & Alignment]
     G --> H[LLM-as-a-Judge API]
     H --> I{Score >= 4?}
@@ -34,11 +34,12 @@ graph TD
 * **Error Observability:** Mandatory error interception and AST compression via jCodeMunch.
 * **12-Factor Governance:** Enforces stateless processes and BYOK configuration.
 * **Context Compaction & Router Alignment:** Strict token conservation and payload mutation for Agentic AI.
-* **Data Validation:** Idempotent DLQ routing via Pydantic.
-* **SQL Standards:** Write-Ahead Logging and `INSERT OR REPLACE` idempotency via DuckDB.
+* **Data Validation:** Fault-tolerant DLQ routing via Pydantic.
+* **SQL Standards:** Write-Ahead Logging and Safe Upserts via DuckDB.
 * **Hugging Face Standards:** Zero-cost offsite WebUI routing deployment constraints.
 
 ### Specialized Skills (`.agents/skills/`)
+* **Diagram Generator:** Programmatic generation of highly polished architecture diagrams via Python `diagrams` and `D2`.
 * **DuckDB Optimizer:** Configures DuckDB for maximum reliability, data integrity, and memory safety.
 * **Pipeline Architect:** Designs minimalist, fault-tolerant ETL pipelines using standard Python.
 
