@@ -13,22 +13,7 @@ This repository serves as a powerful, extensible **Base Agentic Environment** bu
 ## 🚀 Dynamic Skill Integration
 This workspace is designed to be highly composable. **As new skills and agents are developed in separate, isolated projects, they are continuously imported into this base environment.** This aggregation allows the environment to grow exponentially more powerful over time, consolidating isolated intelligence into a single, unified operating system.
 
-### The Agentic Handover Workflow
-![Handover Flow](docs/assets/handover_flow.png)
 
-## 🏗️ Dual-Prong Testing Architecture
-```mermaid
-graph TD
-    A[Test Suite Trigger] --> B{Evaluation Type}
-    B -->|Deterministic| C[Code Integrity]
-    C --> D[Pydantic Validation DLQ]
-    C --> E[DuckDB Safe Upserts]
-    B -->|Probabilistic| G[AI Behavior & Alignment]
-    G --> H[LLM-as-a-Judge API]
-    H --> I{Score >= 4?}
-    I -->|Yes| J[Pass]
-    I -->|No| K[Fail]
-```
 
 ## 🛠️ Current Capabilities
 
@@ -37,8 +22,8 @@ graph TD
 * **Error Observability:** Mandatory error interception and AST compression via jCodeMunch.
 * **12-Factor Governance:** Enforces stateless processes and BYOK configuration.
 * **Context Compaction & Router Alignment:** Strict token conservation and payload mutation for Agentic AI.
-* **Data Validation:** Fault-tolerant DLQ routing via Pydantic.
-* **SQL Standards:** Write-Ahead Logging and Safe Upserts via DuckDB.
+* **Data Validation:** Idempotent DLQ routing via Pydantic.
+* **SQL Standards:** Write-Ahead Logging and `INSERT OR REPLACE` idempotency via DuckDB.
 * **Hugging Face Standards:** Zero-cost offsite WebUI routing deployment constraints.
 
 ### Specialized Skills (`.agents/skills/`)
@@ -72,3 +57,24 @@ To test if this environment works as intended in your own projects, you do not n
 3. **Trigger the Handover:** Send your AI the following prompt:
    > *"Please read `@HANDOVER.md`. You must acknowledge the architecture constraints and the strict Rule 00 (No Unauthorized Deletions). Your absolute first action must be to execute `.agents/workflows/merge-conflict-resolution.md` to safely resolve any file collisions. Once I have manually approved the merge, proceed to `BOOTSTRAP.MD`."*
 4. **Watch it Work:** The AI will automatically parse the strict governance rules, apply the context compactor, and begin aligning your legacy code to the production standards defined in `.agents/rules/`.
+
+---
+
+## 📊 Visual Reference Appendix
+
+### The Agentic Handover Workflow
+![Handover Flow](docs/assets/handover_flow.png)
+
+### Dual-Prong Testing Architecture
+```mermaid
+graph TD
+    A[Test Suite Trigger] --> B{Evaluation Type}
+    B -->|Deterministic| C[Code Integrity]
+    C --> D[Pydantic Validation DLQ]
+    C --> E[DuckDB Idempotency]
+    B -->|Probabilistic| G[AI Behavior & Alignment]
+    G --> H[LLM-as-a-Judge API]
+    H --> I{Score >= 4?}
+    I -->|Yes| J[Pass]
+    I -->|No| K[Fail]
+```
