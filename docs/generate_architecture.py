@@ -14,8 +14,15 @@ output_path = os.path.join(os.path.dirname(__file__), "assets", "architecture_di
 
 graph_attr = {
     "fontsize": "24",
-    "bgcolor": "transparent",
+    "bgcolor": "#0D1117",
+    "fontcolor": "#FFFFFF",
     "pad": "0.5"
+}
+
+cluster_attr = {
+    "bgcolor": "#161B22",
+    "fontcolor": "#FFFFFF",
+    "color": "#30363D"
 }
 
 with Diagram(
@@ -27,21 +34,21 @@ with Diagram(
 ):
     user = Client("Agentic Interface")
 
-    with Cluster("Control Plane (.agents/)"):
+    with Cluster("Control Plane (.agents/)", graph_attr=cluster_attr):
         rules = Python("Governance Rules\n(12-Factor, Idempotency)")
         workflows = Python("CI/CD Workflows\n(Publish, Sync)")
         skills = Python("Skills\n(DuckDB Optimizer)")
         
         control_group = [rules, workflows, skills]
 
-    with Cluster("Application (src/)"):
+    with Cluster("Application (src/)", graph_attr=cluster_attr):
         router = Nginx("FastAPI Gateway")
         compactor = Python("Context Compactor")
         judge = Python("LLM-as-a-Judge\n(Eval Suite)")
         
         app_group = [router, compactor, judge]
 
-    with Cluster("Data Plane (.antigravity/ & data/)"):
+    with Cluster("Data Plane (.antigravity/ & data/)", graph_attr=cluster_attr):
         duckdb = PostgreSQL("DuckDB Telemetry\n(Idempotent INSERT)")
         dlq = S3("Parquet DLQ\n(Quarantine)")
         

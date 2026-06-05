@@ -13,14 +13,14 @@ The Base Agentic Environment supports two industry-standard tools. Choose the ri
 ### 1. Python `diagrams` (mingrammer)
 **Best for:** Cloud architecture, specific technology nodes (AWS, GCP, Python, Databases), and SRE visual flow.
 - **Dependency:** Ensure `diagrams` is in `requirements.txt`.
-- **Execution:** Create a script (e.g., `docs/generate_architecture.py`), define the nodes, and run it via `python <script>.py`.
+- **Execution:** Create a script (e.g., `docs/generate_architecture.py`), define the nodes, and run it via `python <script>.py`. Ensure `graph_attr` and `cluster_attr` enforce Dark Mode (`bgcolor="#0D1117"`).
 - **Note:** Graphviz must be installed on the system path.
 
 ### 2. D2 (Declarative Diagramming)
 **Best for:** Fast sketch-style diagrams, generic software flowcharts, UML replacements, and abstract component logic.
 - **Dependency:** D2 binary is pre-installed via winget.
 - **Execution:** Create a `.d2` text file (e.g., `docs/architecture.d2`) with D2 syntax (`A -> B: request`).
-- **Render:** Run `d2 docs/architecture.d2 docs/assets/architecture_diagram.png --theme=200 --sketch` (Theme 200 is dark mode).
+- **Render:** Run `d2 docs/architecture.d2 docs/assets/architecture_diagram.png --theme=200 --sketch` (Theme 200 is mandatory for dark mode).
 
 ## Workflow Execution
 1. Read the `README.md` to understand the conceptual relationships.
