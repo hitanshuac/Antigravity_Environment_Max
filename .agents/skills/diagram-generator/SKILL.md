@@ -26,5 +26,11 @@ The Base Agentic Environment supports two industry-standard tools. Choose the ri
 1. Read the `README.md` to understand the conceptual relationships.
 2. Select the appropriate tool.
 3. Generate the code (Python or D2).
-4. Run the code to output `docs/assets/architecture_diagram.png`.
-5. Check `git status` and commit the new diagram.
+4. Run the code to output the base `docs/assets/architecture_diagram.png`.
+
+### The Hybrid Aesthetic Pass (Image-to-Image)
+Because programmatic diagrams often lack visual flair, you MUST apply a stylistic pass if the diagram is meant for recruiter-facing or showcase assets:
+1. After generating the base PNG via code, pass that PNG path directly into the `generate_image` tool via the `ImagePaths` parameter.
+2. Prompt the AI: *"Use the provided architecture diagram as a strict structural base. Redraw it exactly node-for-node, but apply a highly appealing, sleek, futuristic glassmorphism dark-mode style with glowing neon blue and purple accents. The layout must remain identical to the base image. Make sure the text is as clear as possible."*
+3. Overwrite the original `architecture_diagram.png` with this new, stylized masterpiece.
+4. Check `git status` and commit the new diagram.
