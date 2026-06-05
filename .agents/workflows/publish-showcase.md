@@ -8,7 +8,7 @@ description: Automatically synthesize project logs, verify show-case assets, and
 2. Synthesize these files to update the `README.md` with the newest version baseline, SRE guardrails, and metrics.
 3. **Verify Documentation Assets (Dual-Presentation Mandate):**
    - Confirm that the recruiter-facing showcase PNG (`docs/assets/architecture_diagram.png`) exists and is referenced at the top of `README.md`.
-   - **Asset Generation Rules:** If the PNG is missing or is a placeholder, you must **NEVER** use an AI image generator (like DALL-E or Imagen). Instead, execute the `@[.agents/skills/diagram-generator/SKILL.md]` to programmatically generate the diagram using either Python `diagrams` or `D2`. Ensure the output path correctly overwrites `docs/assets/architecture_diagram.png`.
+   - **Asset Generation Rules:** If the PNG is missing or is a placeholder, you must **NEVER** use an AI image generator directly. Instead, execute the `@[.agents/skills/diagram-generator/SKILL.md]` to programmatically generate the diagram using either Python `diagrams` or `D2`. Ensure the output path correctly overwrites `docs/assets/architecture_diagram.png`.
    - Confirm that the technical Mermaid diagram is present in the flow/architecture section.
 4. Show the proposed changes to the user for approval.
 5. Once approved, stage the files:
