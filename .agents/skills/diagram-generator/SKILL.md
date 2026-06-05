@@ -26,6 +26,11 @@ The Base Agentic Environment supports two industry-standard tools. Choose the ri
 1. Read the `README.md` to understand the conceptual relationships.
 2. Select the appropriate tool.
 3. Generate the code (Python or D2).
-4. Run the code to output the base `docs/assets/architecture_diagram.png`.
-5. **STRICT RULE:** NEVER run the output image through an AI Image Generator (like DALL-E) to apply a "stylistic pass". AI image generators inevitably corrupt the text, creating gibberish. You must rely 100% on the native output of the Python or D2 script to guarantee precision.
-6. Check `git status` and commit the new diagram.
+
+### The Composite Overlay Protocol (Text + Aesthetics)
+To achieve a breathtaking visual aesthetic while maintaining 100% deterministic text (no gibberish), use the composite overlay method:
+1. Ensure `graph_attr["bgcolor"]` is set to `"transparent"` in the Python script.
+2. Run the code to output the transparent foreground to `docs/assets/architecture_diagram.png`.
+3. Use the AI Image Generator to create an empty background plate: *"A stunning, completely empty, highly professional business dashboard background. Do NOT include any text, letters, nodes, or flowchart elements. Just the aesthetic shell: sleek borders, soft drop shadows, a clean, high-end enterprise layout with glassmorphism panels, and subtle glowing neon blue and purple accents over a dark background."*
+4. Run `python docs/composite_diagram.py docs/assets/architecture_diagram.png <path_to_ai_bg> docs/assets/architecture_diagram.png` to merge the layers.
+5. Check `git status` and commit the composite masterpiece.
