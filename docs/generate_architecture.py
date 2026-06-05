@@ -35,7 +35,7 @@ with Diagram(
     user = Client("Agentic Interface")
 
     with Cluster("Control Plane (.agents/)", graph_attr=cluster_attr):
-        rules = Python("Governance Rules\n(12-Factor, Idempotency)")
+        rules = Python("Governance Rules\n(12-Factor, Fault Tolerance)")
         workflows = Python("CI/CD Workflows\n(Publish, Sync)")
         skills = Python("Skills\n(DuckDB Optimizer)")
         
@@ -49,8 +49,8 @@ with Diagram(
         app_group = [router, compactor, judge]
 
     with Cluster("Data Plane (.antigravity/ & data/)", graph_attr=cluster_attr):
-        duckdb = PostgreSQL("DuckDB Telemetry\n(Idempotent INSERT)")
-        dlq = S3("Parquet DLQ\n(Quarantine)")
+        duckdb = PostgreSQL("DuckDB Telemetry\n(Safe Upserts & Logs)")
+        dlq = S3("Parquet DLQ\n(Error Quarantine)")
         
         data_group = [duckdb, dlq]
 
