@@ -27,7 +27,9 @@ jobs:
         run: npm install -g @mermaid-js/mermaid-cli
 
       - name: Render Mermaid to PNG
-        run: mmdc -i README.md -o docs/assets/architecture_diagram.png
+        run: |
+          echo '{"args": ["--no-sandbox"]}' > puppeteer-config.json
+          mmdc -p puppeteer-config.json -i README.md -o docs/assets/architecture_diagram.png
 
       - name: Commit and Push Updated Architecture Image
         run: |

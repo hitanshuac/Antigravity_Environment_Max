@@ -1,26 +1,27 @@
-import os
-import sys
-import json
 import datetime
+import json
+import os
 import subprocess
+import sys
 
 ERROR_LOG_PATH = "data/error_logs.json"
 
+
 def log_error(command, stderr):
     os.makedirs(os.path.dirname(ERROR_LOG_PATH), exist_ok=True)
-    
+
     error_entry = {
         "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
         "error_type": "Git CLI Error",
         "component": command,
         "stack_trace_summary": stderr.strip() if stderr else "Unknown error",
         "status": "UNRESOLVED",
-        "resolution_strategy": ""
+        "resolution_strategy": "",
     }
 
     try:
         if os.path.exists(ERROR_LOG_PATH):
-            with open(ERROR_LOG_PATH, "r") as f:
+            with open(ERROR_LOG_PATH) as f:
                 content = f.read().strip()
                 if content.startswith("[") and content.endswith("]"):
                     logs = json.loads(content)
@@ -41,9 +42,10 @@ def log_error(command, stderr):
     with open(ERROR_LOG_PATH, "w") as f:
         json.dump(logs, f, indent=2)
 
+
 def run_git(args):
     print(f"Running: git {' '.join(args)}")
-    result = subprocess.run(["git"] + args, capture_output=True, text=True)
+    result = subprocess.run(["git", *args], capture_output=True, text=True)
     if result.returncode != 0:
         stderr = result.stderr
         print(f"Git command failed:\n{stderr}")
@@ -51,12 +53,13 @@ def run_git(args):
         return False, stderr
     return True, result.stdout
 
+
 def handle_checkpoint(message):
     print("Staging files...")
     success, _ = run_git(["add", "."])
     if not success:
         return False
-        
+
     print("Committing files...")
     success, stdout = run_git(["commit", "-m", f"[Safe Checkpoint] {message}"])
     if not success and "nothing to commit" not in stdout.lower():
@@ -77,8 +80,9 @@ def handle_checkpoint(message):
                     print("Push successful after auto-recovery.")
                     return True
         return False
-        
+
     return True
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -86,7 +90,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     command = sys.argv[1]
-    
+
     if command == "checkpoint":
         message = sys.argv[2] if len(sys.argv) > 2 else "auto checkpoint"
         if handle_checkpoint(message):

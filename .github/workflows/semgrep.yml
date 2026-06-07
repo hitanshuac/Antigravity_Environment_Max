@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: semgrep ci
+      - name: Install Semgrep
+        run: pip install semgrep
+      - name: Run Semgrep
+        run: semgrep ci
         env:
           SEMGREP_RULES: p/default p/owasp-top-ten p/secrets p/python
