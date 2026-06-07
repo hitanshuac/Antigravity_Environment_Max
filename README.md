@@ -73,6 +73,11 @@ python -m pytest src/tests/ -v --tb=short
 * **Observability (`observability.py`):** AST-compressed error logging to `data/error_logs.json`.
 * **Data Validation (`validation.py`):** Safely isolates malformed Pydantic records to a Dead-Letter Queue without crashing.
 
+### Zero-Touch Automation
+* **`git_manager.py`**: Intercepts Git execution, logs terminal errors to the observability pipeline, and handles autonomous auto-recovery on divergence.
+* **`ci_log_fetcher.py`**: The Cloud-to-Local Bridge. Syncs remote GitHub Actions failures directly into local logs for autonomous resolution.
+* **`watch_ci.ps1`**: A zero-touch background daemon that polls GitHub. Automatically syncs pipeline errors and triggers a native Windows Desktop Notification when a remote failure occurs.
+
 ### Product & Systems Design (`.agents/product/`)
 * **Product Templates:** Pre-defined frameworks for PRDs, Technical Architecture (TAD), Security Specs, Frontend Specs, and Feature Ticket Lists to guarantee deterministic AI output.
 * **Architecture Decision Records (ADRs):** Immutable log of architectural choices (`.agents/architecture/adrs/`).
