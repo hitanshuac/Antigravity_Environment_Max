@@ -1,14 +1,14 @@
 import os
 import time
 import uuid
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 import requests
 
 from .base import CodeSandbox, ExecutionResult
 
 
-def _truncate_output(text: str, max_bytes: int) -> Tuple[str, bool]:
+def _truncate_output(text: str, max_bytes: int) -> tuple[str, bool]:
     """Truncate output text to at most `max_bytes` UTF-8 bytes.
 
     Args:
@@ -41,7 +41,7 @@ class MicrosandboxSandbox(CodeSandbox):
         self._cpu_limit = float(os.getenv("MSB_CPU_LIMIT", "1.0"))
         self._start_timeout_sec = float(os.getenv("MSB_START_TIMEOUT_SEC", "30"))
 
-    def _headers(self) -> Dict[str, str]:
+    def _headers(self) -> dict[str, str]:
         """Build request headers for Microsandbox server calls.
 
         Returns:
@@ -54,8 +54,8 @@ class MicrosandboxSandbox(CodeSandbox):
         return headers
 
     def _post_json_rpc(
-        self, path: str, payload: Dict[str, Any], timeout_sec: float
-    ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+        self, path: str, payload: dict[str, Any], timeout_sec: float
+    ) -> tuple[dict[str, Any] | None, str | None]:
         """Send JSON-RPC request to Microsandbox server.
 
         Args:
@@ -88,7 +88,7 @@ class MicrosandboxSandbox(CodeSandbox):
             return None, f"Microsandbox server returned HTTP {response.status_code}: {message}"
 
         try:
-            data: Dict[str, Any] = response.json()
+            data: dict[str, Any] = response.json()
         except ValueError as exc:
             return None, f"Microsandbox server returned invalid JSON: {exc}"
 
@@ -98,7 +98,7 @@ class MicrosandboxSandbox(CodeSandbox):
 
         return data, None
 
-    def _start_sandbox(self, sandbox_name: str, timeout: int) -> Optional[str]:
+    def _start_sandbox(self, sandbox_name: str, timeout: int) -> str | None:
         """Start a Microsandbox runtime instance.
 
         Args:
@@ -129,7 +129,7 @@ class MicrosandboxSandbox(CodeSandbox):
         )
         return error
 
-    def _stop_sandbox(self, sandbox_name: str) -> Optional[str]:
+    def _stop_sandbox(self, sandbox_name: str) -> str | None:
         """Stop a Microsandbox runtime instance.
 
         Args:

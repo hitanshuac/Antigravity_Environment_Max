@@ -10,7 +10,6 @@ from pathlib import Path
 
 from antigravity_engine.hub._constants import SKIP_DIRS
 
-
 # ---------------------------------------------------------------------------
 # Environment-variable helpers
 # ---------------------------------------------------------------------------

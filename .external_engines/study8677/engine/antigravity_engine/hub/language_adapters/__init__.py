@@ -15,7 +15,6 @@ from antigravity_engine.hub.language_adapters.go_adapter import GoLanguageAdapte
 from antigravity_engine.hub.language_adapters.python_adapter import PythonLanguageAdapter
 from antigravity_engine.hub.language_adapters.typescript_adapter import TypeScriptLanguageAdapter
 
-
 _GENERIC_ADAPTER = GenericLanguageAdapter()
 _ADAPTERS: tuple[LanguageAdapter, ...] = (
     PythonLanguageAdapter(),

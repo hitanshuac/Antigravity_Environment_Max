@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, Optional
+from typing import Any
 
 import requests
 
@@ -9,7 +9,7 @@ def call_local_ollama(
     model: str = "qwen3:0.6b",
     host: str = "http://127.0.0.1:11434",
     stream: bool = False,
-    options: Optional[Dict[str, Any]] = None,
+    options: dict[str, Any] | None = None,
 ) -> str:
     """
     Call a local Ollama-style endpoint at /api/generate.

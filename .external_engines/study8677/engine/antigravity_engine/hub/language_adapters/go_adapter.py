@@ -7,7 +7,6 @@ from pathlib import Path
 
 from antigravity_engine.hub.language_adapters.base import FileSemantics, SymbolDef
 
-
 _PACKAGE_RE = re.compile(r"^\s*package\s+([A-Za-z_][A-Za-z0-9_]*)\s*$", re.MULTILINE)
 _IMPORT_SINGLE_RE = re.compile(r'^\s*import\s+(?:[A-Za-z_][A-Za-z0-9_]*\s+)?(?:"([^"]+)")', re.MULTILINE)
 _IMPORT_BLOCK_START_RE = re.compile(r"^\s*import\s*\(\s*$")

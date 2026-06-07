@@ -12,11 +12,10 @@ pipeline. Human-readable Markdown views are rendered from these models.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
-
 
 ClaimImportance = Literal["high", "medium", "low"]
 RefreshState = Literal["success", "partial", "failed", "skipped"]
@@ -29,7 +28,7 @@ def utc_now_iso() -> str:
     Returns:
         ISO-8601 timestamp string with timezone information.
     """
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 class EvidenceSpan(BaseModel):

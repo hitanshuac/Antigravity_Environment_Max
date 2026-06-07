@@ -14,10 +14,11 @@ This module implements:
 import asyncio
 import json
 import os
-from typing import Any, Awaitable, Callable, Dict, List, Optional, Tuple
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
+from typing import Any
 
-from antigravity_engine.config import settings, MCPServerConfig
+from antigravity_engine.config import MCPServerConfig, settings
 
 
 @dataclass
@@ -27,7 +28,7 @@ class MCPTool:
     name: str
     description: str
     server_name: str
-    input_schema: Dict[str, Any]
+    input_schema: dict[str, Any]
     original_name: str  # Name as defined in MCP server
 
     def get_prefixed_name(self, prefix: str = "") -> str:
@@ -45,9 +46,9 @@ class MCPServerConnection:
     session: Any = None  # ClientSession when connected
     read_stream: Any = None
     write_stream: Any = None
-    tools: List[MCPTool] = field(default_factory=list)
+    tools: list[MCPTool] = field(default_factory=list)
     connected: bool = False
-    error: Optional[str] = None
+    error: str | None = None
     _client_cm: Any = None  # Client context manager for cleanup
 
 
@@ -70,7 +71,7 @@ class MCPClientManager:
         result = await tools['mcp_github_create_issue'](title="Bug", body="...")
     """
 
-    def __init__(self, config_path: Optional[str] = None):
+    def __init__(self, config_path: str | None = None):
         """
         Initialize the MCP Client Manager.
 
@@ -79,12 +80,12 @@ class MCPClientManager:
                         Defaults to settings.MCP_SERVERS_CONFIG
         """
         self.config_path = config_path or settings.MCP_SERVERS_CONFIG
-        self.servers: Dict[str, MCPServerConnection] = {}
+        self.servers: dict[str, MCPServerConnection] = {}
         self.tool_prefix = settings.MCP_TOOL_PREFIX
         self._initialized = False
         self._lock = asyncio.Lock()
 
-    def _load_server_configs(self) -> List[MCPServerConfig]:
+    def _load_server_configs(self) -> list[MCPServerConfig]:
         """
         Load MCP server configurations from JSON file.
 
@@ -98,7 +99,7 @@ class MCPClientManager:
             return []
 
         try:
-            with open(config_file, "r", encoding="utf-8") as f:
+            with open(config_file, encoding="utf-8") as f:
                 data = json.load(f)
 
             servers = data.get("servers", [])
@@ -300,7 +301,7 @@ class MCPClientManager:
         except Exception as e:
             print(f"      ⚠️ Error discovering tools: {e}")
 
-    def get_all_tools(self) -> List[MCPTool]:
+    def get_all_tools(self) -> list[MCPTool]:
         """
         Get all discovered tools from all connected servers.
 
@@ -313,7 +314,7 @@ class MCPClientManager:
                 all_tools.extend(connection.tools)
         return all_tools
 
-    def get_all_tools_as_callables(self) -> Dict[str, Callable[..., Any]]:
+    def get_all_tools_as_callables(self) -> dict[str, Callable[..., Any]]:
         """
         Convert all MCP tools to callable functions.
 
@@ -420,8 +421,8 @@ Input Schema:
         return "\n".join(descriptions)
 
     async def call_tool(
-        self, tool_name: str, arguments: Dict[str, Any]
-    ) -> Tuple[bool, Any]:
+        self, tool_name: str, arguments: dict[str, Any]
+    ) -> tuple[bool, Any]:
         """
         Call an MCP tool by its prefixed name.
 
@@ -462,7 +463,7 @@ Input Schema:
         self.servers.clear()
         self._initialized = False
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """
         Get status information about all MCP servers.
 
@@ -492,11 +493,11 @@ class MCPClientManagerSync:
     Provides blocking methods for environments that don't support async/await.
     """
 
-    def __init__(self, config_path: Optional[str] = None):
+    def __init__(self, config_path: str | None = None):
         self._async_manager = MCPClientManager(config_path)
-        self._loop: Optional[asyncio.AbstractEventLoop] = None
+        self._loop: asyncio.AbstractEventLoop | None = None
 
-    def _get_loop(self) -> Tuple[asyncio.AbstractEventLoop, bool]:
+    def _get_loop(self) -> tuple[asyncio.AbstractEventLoop, bool]:
         """Get or create an event loop.
 
         Returns:
@@ -532,7 +533,7 @@ class MCPClientManagerSync:
         """
         import threading
 
-        result: Dict[str, Any] = {}
+        result: dict[str, Any] = {}
 
         def runner() -> None:
             loop = asyncio.new_event_loop()
@@ -561,7 +562,7 @@ class MCPClientManagerSync:
             return
         loop.run_until_complete(self._async_manager.initialize())
 
-    def get_all_tools_as_callables(self) -> Dict[str, Callable[..., Any]]:
+    def get_all_tools_as_callables(self) -> dict[str, Callable[..., Any]]:
         """Get all tools as sync-wrapped callables."""
         async_callables = self._async_manager.get_all_tools_as_callables()
         sync_callables = {}
@@ -595,6 +596,6 @@ class MCPClientManagerSync:
             return
         loop.run_until_complete(self._async_manager.shutdown())
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """Get status information."""
         return self._async_manager.get_status()

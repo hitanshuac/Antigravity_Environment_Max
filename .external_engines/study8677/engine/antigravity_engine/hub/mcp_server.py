@@ -22,15 +22,13 @@ Then configure in Claude Code's MCP settings (~/.claude/mcp.json):
 """
 from __future__ import annotations
 
-import asyncio
 import os
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from mcp.server.fastmcp import Context, FastMCP
-
 
 _SECRET_PATTERNS = (
     (
@@ -58,7 +56,7 @@ def _redact_secrets(value: object) -> str:
 def _package_version() -> str:
     """Return the installed engine package version when available."""
     try:
-        from importlib.metadata import PackageNotFoundError, version
+        from importlib.metadata import version
 
         return version("antigravity-engine")
     except Exception:
@@ -88,7 +86,7 @@ def _mcp_log_path() -> Path:
 def _log_mcp_event(message: str) -> Path:
     """Append a small diagnostic event without including environment values."""
     log_path = _mcp_log_path()
-    timestamp = datetime.now(timezone.utc).isoformat()
+    timestamp = datetime.now(UTC).isoformat()
     clean = _redact_secrets(message).replace("\n", " ").replace("\r", " ")
     fd = os.open(log_path, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
     try:
@@ -198,7 +196,7 @@ async def _maybe_upgrade_via_roots(ctx) -> None:
 
     try:
         result = await ctx.request_context.session.list_roots()
-    except Exception as exc:  # noqa: BLE001 — client may not support roots
+    except Exception as exc:
         print(f"[ag-mcp] MCP roots/list unavailable ({exc.__class__.__name__}): keeping workspace = {_active_workspace}", file=sys.stderr)
         return
 
@@ -222,7 +220,7 @@ async def _maybe_upgrade_via_roots(ctx) -> None:
         from antigravity_engine.config import reset_settings
 
         reset_settings()
-    except Exception:  # noqa: BLE001
+    except Exception:
         pass
 
 
@@ -270,7 +268,7 @@ def serve(workspace: Path) -> None:
 
         try:
             return await ask_pipeline(_active_workspace, question)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return _format_tool_error("ask_project", exc)
 
     @mcp.tool()
@@ -300,7 +298,7 @@ def serve(workspace: Path) -> None:
                 f"  {ag_dir / 'conventions.md'}\n"
                 f"  {ag_dir / 'structure.md'}"
             )
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return _format_tool_error("refresh_project", exc)
 
     mcp.run(transport="stdio")
@@ -336,7 +334,7 @@ def main() -> None:
         os.environ["WORKSPACE_PATH"] = str(workspace)
 
         serve(workspace)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         message = _redact_secrets(str(exc) or exc.__class__.__name__)
         log_path = _log_mcp_event(f"fatal startup error: {exc.__class__.__name__}: {message}")
         print(f"Error: ag-mcp failed to start: {message}", file=sys.stderr)

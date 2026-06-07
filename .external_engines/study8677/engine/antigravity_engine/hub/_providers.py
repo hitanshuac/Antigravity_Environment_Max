@@ -19,8 +19,9 @@ import json
 import logging
 import os
 import sys
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Awaitable, Callable, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 if TYPE_CHECKING:
     from antigravity_engine.config import Settings
@@ -78,7 +79,7 @@ class ProviderConfig:
     label: str = "primary"
 
 
-def get_provider_chain(settings: "Settings") -> list[ProviderConfig]:
+def get_provider_chain(settings: Settings) -> list[ProviderConfig]:
     """Build the ordered provider list: primary first, then fallbacks.
 
     The primary comes from the ``OPENAI_*`` settings.  Fallbacks are parsed
@@ -172,7 +173,7 @@ async def run_with_provider_failover(
         activate_provider(provider)
         try:
             return await operation()
-        except Exception as exc:  # noqa: BLE001 — re-raised below unless we fail over
+        except Exception as exc:
             last_exc = exc
             is_last = idx >= len(providers) - 1
             if is_last or not is_retryable(exc):

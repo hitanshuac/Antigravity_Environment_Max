@@ -7,7 +7,6 @@ import shutil
 import subprocess
 from enum import Enum
 from pathlib import Path
-from typing import List, Optional
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -84,7 +83,7 @@ class RepoInitResult(BaseModel):
     project_path: str
     mode: InitMode
     copied_entries: int
-    next_steps: List[str]
+    next_steps: list[str]
 
 
 def _is_within(child: Path, parent: Path) -> bool:
@@ -118,7 +117,7 @@ def _count_entries(path: Path) -> int:
     return sum(1 for _ in path.rglob("*"))
 
 
-def _upsert_env_var(lines: List[str], key: str, value: str) -> List[str]:
+def _upsert_env_var(lines: list[str], key: str, value: str) -> list[str]:
     """Set or append an environment variable line.
 
     Args:
@@ -130,7 +129,7 @@ def _upsert_env_var(lines: List[str], key: str, value: str) -> List[str]:
         Updated `.env` lines.
     """
 
-    updated: List[str] = []
+    updated: list[str] = []
     replaced = False
     prefix_pattern = re.compile(rf"^\s*{re.escape(key)}\s*=")
 
@@ -279,7 +278,7 @@ def _init_git_repo(target_path: Path) -> None:
 
 def initialize_agent_repo(
     options: RepoInitOptions,
-    template_root: Optional[Path] = None,
+    template_root: Path | None = None,
 ) -> RepoInitResult:
     """Initialize a clean project from template root.
 

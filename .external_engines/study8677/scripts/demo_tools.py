@@ -8,14 +8,14 @@ using local/dummy clients for the agent's network calls to avoid external API
 activity.
 """
 
+from src.agent import GeminiAgent
 from src.tools.example_tool import (
     calculate_math,
+    get_stock_price,
     get_weather,
     send_email,
     web_search,
-    get_stock_price,
 )
-from src.agent import GeminiAgent
 
 
 def demo_direct_calls():

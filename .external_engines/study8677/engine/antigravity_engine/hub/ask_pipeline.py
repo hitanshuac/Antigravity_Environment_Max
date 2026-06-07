@@ -10,9 +10,9 @@ import json
 import logging
 import os
 import re
-import subprocess
 import sys
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from antigravity_engine.hub._constants import (
     AGENT_MD_FALLBACK_MARKER,
@@ -28,7 +28,6 @@ from antigravity_engine.hub.contracts import (
     VerificationResult,
     WorkerEvidence,
 )
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from agents import Agent
@@ -63,7 +62,7 @@ def _is_retryable_ask_error(exc: Exception) -> bool:
 
 
 async def _run_with_optional_stream(
-    agent: "Agent",
+    agent: Agent,
     prompt: str,
     max_turns: int = 50,
     timeout: float | None = None,
@@ -118,7 +117,7 @@ async def _run_with_optional_stream(
 
 
 async def _consume_stream_events(
-    stream_result: "RunResultStreaming",
+    stream_result: RunResultStreaming,
     progress_label: str | None = None,
 ) -> str:
     """Consume streaming events and return final output."""
@@ -1535,7 +1534,7 @@ def _build_graph_skill_context(workspace: Path, question: str) -> str | None:
 
     try:
         result = query_graph(question, max_hops=2, workspace=str(workspace))
-    except Exception:  # noqa: BLE001
+    except Exception:
         return None
 
     max_chars = int(os.environ.get("AG_GRAPH_CONTEXT_MAX_CHARS", "8000"))

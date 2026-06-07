@@ -11,7 +11,7 @@ These tools allow the agent to:
 """
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from antigravity_engine.config import settings
 
@@ -74,7 +74,7 @@ def list_mcp_servers() -> str:
         return f"Error getting MCP status: {e}"
 
 
-def list_mcp_tools(server_name: Optional[str] = None) -> str:
+def list_mcp_tools(server_name: str | None = None) -> str:
     """List all available tools from MCP servers.
 
     Args:
@@ -107,7 +107,7 @@ def list_mcp_tools(server_name: Optional[str] = None) -> str:
             return "No MCP tools available. Check server connections."
 
         # Group tools by server
-        tools_by_server: Dict[str, List[Any]] = {}
+        tools_by_server: dict[str, list[Any]] = {}
         for tool in tools:
             if server_name and tool.server_name != server_name:
                 continue
@@ -235,7 +235,7 @@ def mcp_health_check() -> str:
         total = len(servers)
 
         lines = [
-            f"🏥 MCP Health Check",
+            "🏥 MCP Health Check",
             f"   Status: {connected}/{total} servers connected",
             "",
         ]

@@ -1,7 +1,7 @@
 """Pure-pathlib reader for .antigravity/ context files. No engine dependency."""
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 
@@ -42,7 +42,7 @@ def append_to_memory(workspace: Path, filename: str, entry: str) -> Path:
     memory_dir.mkdir(parents=True, exist_ok=True)
     target = memory_dir / filename
 
-    ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    ts = datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S UTC")
     block = f"\n## {ts}\n\n{entry}\n"
 
     with target.open("a", encoding="utf-8") as f:
@@ -66,7 +66,7 @@ def append_decision(workspace: Path, decision: str, rationale: str) -> Path:
     decisions_dir.mkdir(parents=True, exist_ok=True)
     target = decisions_dir / "log.md"
 
-    ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    ts = datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S UTC")
     block = f"\n## {ts}\n\n**Decision:** {decision}\n\n**Rationale:** {rationale}\n"
 
     with target.open("a", encoding="utf-8") as f:

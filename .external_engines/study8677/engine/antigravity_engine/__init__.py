@@ -12,9 +12,9 @@ __version__ = "0.2.1"
 
 __all__ = [
     "Settings",
-    "refresh_pipeline",
-    "ask_pipeline",
     "__version__",
+    "ask_pipeline",
+    "refresh_pipeline",
 ]
 
 

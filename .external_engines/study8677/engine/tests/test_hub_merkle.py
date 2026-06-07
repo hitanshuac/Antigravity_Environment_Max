@@ -3,7 +3,6 @@ from pathlib import Path
 
 from antigravity_engine.hub._merkle import (
     SNAPSHOT_VERSION,
-    MerkleTree,
     build_tree,
     build_workspace_tree,
     compute_content_hash,
@@ -11,7 +10,6 @@ from antigravity_engine.hub._merkle import (
     load_snapshot,
     save_snapshot,
 )
-
 
 # --- hashing primitives ---------------------------------------------------
 

@@ -12,8 +12,7 @@ import os
 import re
 import subprocess
 import sys
-from collections import Counter
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -99,7 +98,7 @@ def _ensure_refresh_workspace_initialized(workspace: Path) -> Path:
         manifest = {
             "schema_version": _ANTIGRAVITY_MANIFEST_VERSION,
             "workspace": str(workspace),
-            "created_at": datetime.now(timezone.utc).isoformat(),
+            "created_at": datetime.now(UTC).isoformat(),
             "managed_by": "antigravity-refresh",
         }
         manifest_path.write_text(
@@ -255,6 +254,7 @@ async def refresh_pipeline(workspace: Path, quick: bool = False, failed_only: bo
 
     if not refresh_scan_only:
         from agents import set_tracing_disabled
+
         from antigravity_engine.config import get_settings
         from antigravity_engine.hub.agents import create_model
 
@@ -265,7 +265,7 @@ async def refresh_pipeline(workspace: Path, quick: bool = False, failed_only: bo
     ag_dir = _ensure_refresh_workspace_initialized(workspace)
     sha_file = ag_dir / ".last_refresh_sha"
     refresh_status = RefreshStatus(
-        refresh_run_id=datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ"),
+        refresh_run_id=datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ"),
         overall_status="success",
     )
 
@@ -447,8 +447,8 @@ async def refresh_pipeline(workspace: Path, quick: bool = False, failed_only: bo
 
     if not refresh_scan_only:
         from antigravity_engine.hub.agents import (
-            build_refresh_module_swarm_v2,
             build_refresh_git_agent,
+            build_refresh_module_swarm_v2,
         )
         from antigravity_engine.hub.scanner import detect_modules
 
@@ -1017,7 +1017,7 @@ def _extract_python_symbol_claims(source_file) -> list[ModuleClaim]:
     Returns:
         Claims derived from top-level definitions and imports.
     """
-    import ast  # noqa: F811 — lazy import for legacy path only
+    import ast
     claims: list[ModuleClaim] = []
     rel_path = source_file.rel_path
     lines = source_file.content.splitlines()

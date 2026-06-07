@@ -2,7 +2,6 @@
 from pathlib import Path
 from unittest.mock import MagicMock, call, patch
 
-import pytest
 from typer.testing import CliRunner
 
 runner = CliRunner()
@@ -54,7 +53,7 @@ def test_run_hub_refresh_console_script_found() -> None:
 
 def test_run_hub_fallback_to_python_m(tmp_path: Path) -> None:
     """When no console script but monorepo dir exists, falls back to python -m."""
-    from ag_cli.cli import _run_hub, _REPO_ROOT
+    from ag_cli.cli import _REPO_ROOT, _run_hub
 
     # Create the marker file at the expected location
     hub_main = _REPO_ROOT / "engine" / "antigravity_engine" / "hub" / "__main__.py"

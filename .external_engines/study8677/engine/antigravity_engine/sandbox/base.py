@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Protocol, Dict
+from typing import Protocol
 
 
 @dataclass
@@ -8,7 +8,7 @@ class ExecutionResult:
     stderr: str
     exit_code: int
     duration: float
-    meta: Dict[str, object]
+    meta: dict[str, object]
 
 
 class CodeSandbox(Protocol):

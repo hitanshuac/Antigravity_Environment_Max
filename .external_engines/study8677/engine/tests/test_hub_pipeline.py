@@ -3,7 +3,6 @@ from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-
 from antigravity_engine.hub.pipeline import (
     _build_ask_context,
     _format_scan_report,
@@ -107,6 +106,7 @@ async def test_refresh_pipeline_creates_conventions(tmp_path: Path, monkeypatch)
 
     with patch.dict("sys.modules", {"agents": mock_agents_module}):
         import importlib
+
         import antigravity_engine.hub.pipeline as pipeline_mod
         importlib.reload(pipeline_mod)
 
@@ -146,6 +146,7 @@ async def test_ask_pipeline_returns_answer(tmp_path: Path, monkeypatch) -> None:
 
     with patch.dict("sys.modules", {"agents": mock_agents_module}):
         import importlib
+
         import antigravity_engine.hub.pipeline as pipeline_mod
         importlib.reload(pipeline_mod)
 
@@ -225,6 +226,7 @@ def test_ask_tools_can_be_wrapped_for_answer_agent() -> None:
     agents at runtime. This test guards that the wiring exists and produces
     the SDK FunctionTool objects the Agent constructor expects."""
     from pathlib import Path
+
     from antigravity_engine.hub.agents import _wrap_tools
     from antigravity_engine.hub.ask_tools import create_ask_tools
 

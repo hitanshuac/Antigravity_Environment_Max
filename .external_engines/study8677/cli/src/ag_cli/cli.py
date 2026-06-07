@@ -16,11 +16,11 @@ from typing import Final
 
 import typer
 from rich.console import Console
-
-from ag_cli.reader import append_to_memory, append_decision
 from rich.panel import Panel
 from rich.text import Text
 from rich.tree import Tree
+
+from ag_cli.reader import append_decision, append_to_memory
 
 # Use a group (rich_markup_mode) so subcommands like `ag init` are not
 # flattened into the root command by Typer's single-command optimisation.

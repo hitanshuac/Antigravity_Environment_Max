@@ -1,10 +1,10 @@
 import json
 import re
-from datetime import datetime, timezone
-from typing import Any, Callable, Dict, List, Optional
+from collections.abc import Callable
+from datetime import UTC, datetime
+from typing import Any
 
 from antigravity_engine.config import settings
-
 
 ENTRY_PATTERN = re.compile(
     r"^### Entry (?P<index>\d+) \| role=(?P<role>[^\n|]+) \| ts=(?P<timestamp>[^\n]+)\n"
@@ -31,8 +31,8 @@ class MemoryManager:
 
     def __init__(
         self,
-        memory_file: Optional[str] = None,
-        summary_file: Optional[str] = None,
+        memory_file: str | None = None,
+        summary_file: str | None = None,
     ) -> None:
         """
         Initialize memory storage.
@@ -48,10 +48,10 @@ class MemoryManager:
         self.summary_file = settings.resolve_path(target_summary_file)
         self.summary: str = ""
         self.summary_checkpoint: int = 0
-        self._memory: List[Dict[str, Any]] = []
+        self._memory: list[dict[str, Any]] = []
         self._load_memory()
 
-    def _parse_markdown_entries(self, content: str) -> List[Dict[str, Any]]:
+    def _parse_markdown_entries(self, content: str) -> list[dict[str, Any]]:
         """Parse markdown entry blocks into structured history.
 
         Args:
@@ -60,10 +60,10 @@ class MemoryManager:
         Returns:
             Parsed message entries.
         """
-        entries: List[Dict[str, Any]] = []
+        entries: list[dict[str, Any]] = []
         for match in ENTRY_PATTERN.finditer(content):
             raw_metadata = (match.group("metadata") or "").strip()
-            metadata: Dict[str, Any] = {}
+            metadata: dict[str, Any] = {}
             if raw_metadata:
                 try:
                     parsed_metadata = json.loads(raw_metadata)
@@ -119,7 +119,7 @@ class MemoryManager:
 
     def _render_markdown_memory(self) -> str:
         """Render history as markdown content."""
-        lines: List[str] = [
+        lines: list[str] = [
             "# Agent Memory Log",
             "",
             "Append-only conversational memory for the agent runtime.",
@@ -134,7 +134,7 @@ class MemoryManager:
 
         for index, entry in enumerate(self._memory, 1):
             role = str(entry.get("role", "unknown"))
-            timestamp = str(entry.get("timestamp") or datetime.now(timezone.utc).isoformat())
+            timestamp = str(entry.get("timestamp") or datetime.now(UTC).isoformat())
             metadata = (
                 entry.get("metadata")
                 if isinstance(entry.get("metadata"), dict)
@@ -199,7 +199,7 @@ class MemoryManager:
         self,
         role: str,
         content: str,
-        metadata: Optional[Dict[str, Any]] = None,
+        metadata: dict[str, Any] | None = None,
     ) -> None:
         """Add a new interaction entry and persist.
 
@@ -208,20 +208,20 @@ class MemoryManager:
             content: Message content body.
             metadata: Optional structured metadata.
         """
-        entry: Dict[str, Any] = {
+        entry: dict[str, Any] = {
             "role": role,
             "content": content,
             "metadata": metadata or {},
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
         }
         self._memory.append(entry)
         self.save_memory()
 
-    def get_history(self) -> List[Dict[str, Any]]:
+    def get_history(self) -> list[dict[str, Any]]:
         """Return full conversation history."""
         return self._memory
 
-    def search_history(self, query: str, limit: int = 6) -> List[Dict[str, Any]]:
+    def search_history(self, query: str, limit: int = 6) -> list[dict[str, Any]]:
         """Search memory entries using lightweight keyword scoring.
 
         Args:
@@ -239,7 +239,7 @@ class MemoryManager:
         if not tokens:
             tokens = [cleaned_query]
 
-        scored_entries: List[tuple[int, int, Dict[str, Any]]] = []
+        scored_entries: list[tuple[int, int, dict[str, Any]]] = []
         for index, entry in enumerate(self._memory):
             content = str(entry.get("content", ""))
             content_lower = content.lower()
@@ -270,7 +270,7 @@ class MemoryManager:
         if not matches:
             return "No relevant prior memory snippets found."
 
-        lines: List[str] = []
+        lines: list[str] = []
         for item in matches:
             role = str(item.get("role", "unknown"))
             timestamp = str(item.get("timestamp", "n/a"))
@@ -286,7 +286,7 @@ class MemoryManager:
 
     def _default_summarizer(
         self,
-        old_messages: List[Dict[str, Any]],
+        old_messages: list[dict[str, Any]],
         previous_summary: str,
     ) -> str:
         """Fallback summarization that compacts old messages.
@@ -298,7 +298,7 @@ class MemoryManager:
         Returns:
             Updated summary text.
         """
-        lines: List[str] = []
+        lines: list[str] = []
         if previous_summary:
             lines.append(previous_summary.strip())
         for message in old_messages:
@@ -311,8 +311,8 @@ class MemoryManager:
         self,
         system_prompt: str,
         max_messages: int,
-        summarizer: Optional[Callable[[List[Dict[str, Any]], str], str]] = None,
-    ) -> List[Dict[str, str]]:
+        summarizer: Callable[[list[dict[str, Any]], str], str] | None = None,
+    ) -> list[dict[str, str]]:
         """Build context window with checkpointed summary compression.
 
         Args:
@@ -333,7 +333,7 @@ class MemoryManager:
             raise ValueError("max_messages must be at least 1.")
 
         history = self.get_history()
-        system_message: Dict[str, str] = {"role": "system", "content": system_prompt}
+        system_message: dict[str, str] = {"role": "system", "content": system_prompt}
 
         if len(history) <= max_messages:
             return [system_message, *history]

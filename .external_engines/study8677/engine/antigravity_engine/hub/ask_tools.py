@@ -18,10 +18,9 @@ import mimetypes
 import os
 import re
 import subprocess
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
-from antigravity_engine.hub._constants import SKIP_DIRS
 from antigravity_engine.hub._utils import is_safe_path, should_skip_dir
 from antigravity_engine.hub.retrieval_graph import wrap_retrieval_tools
 

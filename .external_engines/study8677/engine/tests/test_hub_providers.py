@@ -4,7 +4,6 @@ import json
 from types import SimpleNamespace
 
 import pytest
-
 from antigravity_engine.hub import _providers
 from antigravity_engine.hub._providers import (
     ProviderConfig,
@@ -32,7 +31,7 @@ def _settings() -> SimpleNamespace:
         Exception("HTTP 503 from upstream"),
         Exception("Connection refused"),
         TimeoutError("deadline exceeded"),
-        asyncio.TimeoutError(),
+        TimeoutError(),
     ],
 )
 def test_is_retryable_provider_error_true(exc: Exception) -> None:

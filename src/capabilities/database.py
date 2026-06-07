@@ -1,5 +1,6 @@
+
 import duckdb
-import os
+
 
 def init_duckdb(db_path=":memory:"):
     conn = duckdb.connect(db_path)
@@ -7,7 +8,7 @@ def init_duckdb(db_path=":memory:"):
     if db_path != ":memory:":
         conn.execute("PRAGMA wal_autocheckpoint='1GB'")
     conn.execute("PRAGMA memory_limit='256MB'")
-    
+
     # Create the target table
     conn.execute("""
         CREATE TABLE IF NOT EXISTS telemetry (

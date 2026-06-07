@@ -2,7 +2,6 @@
 from pathlib import Path
 
 import pytest
-
 from antigravity_engine.hub._constants import WORKSPACE_ROOT_MODULE_ID
 from antigravity_engine.hub.module_grouping import (
     MAX_FILES_PER_GROUP,

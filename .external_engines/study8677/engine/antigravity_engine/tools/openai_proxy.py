@@ -5,7 +5,8 @@ completion endpoint (including OpenAI, Azure OpenAI, or self-hosted
 providers like Ollama/Llama.cpp that expose the same API).
 """
 
-from typing import Optional, List, Dict, Any
+from typing import Any
+
 import requests
 
 from antigravity_engine.config import settings
@@ -13,8 +14,8 @@ from antigravity_engine.config import settings
 
 def call_openai_chat(
     prompt: str,
-    system: Optional[str] = None,
-    model: Optional[str] = None,
+    system: str | None = None,
+    model: str | None = None,
     temperature: float = 0.7,
     max_tokens: int = 512,
 ) -> str:
@@ -44,7 +45,7 @@ def call_openai_chat(
     if api_key:
         headers["Authorization"] = f"Bearer {api_key}"
 
-    messages: List[Dict[str, Any]] = []
+    messages: list[dict[str, Any]] = []
     if system:
         messages.append({"role": "system", "content": system})
     messages.append({"role": "user", "content": prompt})

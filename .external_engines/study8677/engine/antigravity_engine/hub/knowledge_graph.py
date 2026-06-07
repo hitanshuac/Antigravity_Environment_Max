@@ -11,7 +11,7 @@ import, symbol, test, and entrypoint relationships through one path.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -19,14 +19,14 @@ from antigravity_engine.hub._constants import SOURCE_CODE_EXTS
 from antigravity_engine.hub.semantic_index import SemanticIndex, build_semantic_index
 
 if TYPE_CHECKING:
-    from antigravity_engine.hub.language_adapters import FileSemantics, SymbolDef
+    from antigravity_engine.hub.language_adapters import SymbolDef
     from antigravity_engine.hub.scanner import ScanReport
 
 # Maximum number of source files to parse for semantic edges.
 _MAX_SEMANTIC_FILES = 300
 
 
-def build_knowledge_graph(root: Path, report: "ScanReport") -> dict[str, object]:
+def build_knowledge_graph(root: Path, report: ScanReport) -> dict[str, object]:
     """Build a project knowledge graph from scan metadata and shared semantics.
 
     Args:
@@ -96,7 +96,7 @@ def build_knowledge_graph(root: Path, report: "ScanReport") -> dict[str, object]
 
     return {
         "schema": "antigravity-knowledge-graph-v2",
-        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "created_at_utc": datetime.now(UTC).isoformat(),
         "workspace": str(root.resolve()),
         "summary": {
             "file_count": report.file_count,
@@ -123,7 +123,7 @@ def build_knowledge_graph(root: Path, report: "ScanReport") -> dict[str, object]
 
 def _extract_semantic_edges(
     root: Path,
-    report: "ScanReport",
+    report: ScanReport,
     existing_file_ids: set[str],
 ) -> dict[str, object]:
     """Extract adapter-driven semantic nodes and edges for source files.
@@ -284,7 +284,7 @@ def _ensure_symbol_node(
     nodes: list[dict[str, object]],
     seen_symbols: set[str],
     rel_path: str,
-    symbol: "SymbolDef",
+    symbol: SymbolDef,
 ) -> str:
     """Create a symbol node once and return its identifier."""
     symbol_label = symbol.qualified_name or symbol.name

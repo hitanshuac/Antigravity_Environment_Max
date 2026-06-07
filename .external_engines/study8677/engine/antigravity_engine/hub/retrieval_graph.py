@@ -19,13 +19,12 @@ import inspect
 import json
 import os
 import re
-from datetime import datetime, timezone
+from collections.abc import Callable
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Callable
 from uuid import uuid4
 
 from antigravity_engine.hub._utils import env_int
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -234,8 +233,8 @@ def record_retrieval_graph(
     if mode == "off":
         return
 
-    created_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-    retrieval_id = f"{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')}_{uuid4().hex[:8]}"
+    created_at = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+    retrieval_id = f"{datetime.now(UTC).strftime('%Y%m%dT%H%M%S%fZ')}_{uuid4().hex[:8]}"
 
     project_id = "project:workspace"
     tool_id = f"tool:{tool_name}"
@@ -417,7 +416,7 @@ def wrap_retrieval_tools(workspace: Path, tools: dict[str, Callable]) -> dict[st
             raw_input_dict = {k: jsonable(v) for k, v in bound.arguments.items()}
             try:
                 result = __fn(*args, **kwargs)
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 record_retrieval_graph(workspace, __tool_name, raw_input_dict, f"ERROR: {exc}")
                 raise
 

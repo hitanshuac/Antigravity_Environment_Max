@@ -11,13 +11,13 @@ Ask Swarm (ag ask) — 3 agents:
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from antigravity_engine.config import Settings
 
 
-def create_model(settings: "Settings") -> str:
+def create_model(settings: Settings) -> str:
     """Resolve an LLM model identifier from settings.
 
     Priority:
@@ -81,6 +81,7 @@ def _get_model_settings_kwargs() -> dict:
     Returns empty dict if env var is not set (for SDK compatibility).
     """
     import os
+
     from agents import ModelSettings
 
     effort = os.environ.get("AG_REASONING_EFFORT", "").strip()
@@ -583,11 +584,11 @@ def build_refresh_module_swarm(
     """
     Agent = _import_agent()
 
-    from antigravity_engine.hub.scanner import detect_modules, generate_module_context, resolve_module_path
     from antigravity_engine.hub.ask_tools import (
         create_ask_tools,
         create_write_tools,
     )
+    from antigravity_engine.hub.scanner import detect_modules, generate_module_context, resolve_module_path
 
     modules = detect_modules(workspace)
     agents_list: list = []
@@ -674,12 +675,12 @@ def build_refresh_module_swarm_v2(
     """
     Agent = _import_agent()
 
-    from antigravity_engine.hub.scanner import detect_modules, resolve_module_path
     from antigravity_engine.hub.module_grouping import (
-        load_module_files,
-        group_files,
         format_group_context,
+        group_files,
+        load_module_files,
     )
+    from antigravity_engine.hub.scanner import detect_modules, resolve_module_path
 
     modules = detect_modules(workspace)
     if modules_filter is not None:
@@ -733,11 +734,11 @@ def build_refresh_git_agent(model: str, workspace: Path):
     """
     Agent = _import_agent()
 
-    from antigravity_engine.hub.scanner import extract_git_insights
     from antigravity_engine.hub.ask_tools import (
         create_git_tools,
         create_git_write_tools,
     )
+    from antigravity_engine.hub.scanner import extract_git_insights
 
     git_data = extract_git_insights(workspace)
     git_tools = create_git_tools(workspace)
@@ -762,8 +763,8 @@ def build_refresh_git_agent(model: str, workspace: Path):
 
 def build_ask_swarm(
     model: str,
-    workspace: Optional[Path] = None,
-    mcp_tools: Optional[dict] = None,
+    workspace: Path | None = None,
+    mcp_tools: dict | None = None,
 ):
     """Build the Ask Swarm using a dynamic module-based Router-Worker pattern.
 
@@ -939,8 +940,8 @@ def build_refresh_agent(model: str):
 
 def build_reviewer_agent(
     model: str,
-    workspace: Optional[Path] = None,
-    mcp_tools: Optional[dict] = None,
+    workspace: Path | None = None,
+    mcp_tools: dict | None = None,
 ):
     """Build the ask swarm entry-point agent.
 

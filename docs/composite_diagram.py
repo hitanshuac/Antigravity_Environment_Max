@@ -1,5 +1,7 @@
 import sys
+
 from PIL import Image, ImageDraw, ImageFont
+
 
 def create_composite(foreground_path, background_path, output_path):
     # Load images
@@ -34,24 +36,24 @@ def create_composite(foreground_path, background_path, output_path):
     # Add deterministic watermark
     draw = ImageDraw.Draw(bg)
     watermark_text = "github.com/hitanshuac"
-    
+
     # Try to load a generic font, fallback to default if not available
     try:
         font = ImageFont.truetype("arial.ttf", 24)
-    except IOError:
+    except OSError:
         font = ImageFont.load_default()
 
     # Position in bottom right corner
     margin = 20
-    
+
     # Use textbbox to get dimensions
     bbox = draw.textbbox((0, 0), watermark_text, font=font)
     text_width = bbox[2] - bbox[0]
     text_height = bbox[3] - bbox[1]
-    
+
     x = bg.width - text_width - margin
     y = bg.height - text_height - margin
-    
+
     # Draw subtle shadow then text
     draw.text((x+2, y+2), watermark_text, font=font, fill=(0, 0, 0, 150))
     draw.text((x, y), watermark_text, font=font, fill=(255, 255, 255, 200))
@@ -64,5 +66,5 @@ if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("Usage: python composite_diagram.py <fg_path> <bg_path> <output_path>")
         sys.exit(1)
-        
+
     create_composite(sys.argv[1], sys.argv[2], sys.argv[3])

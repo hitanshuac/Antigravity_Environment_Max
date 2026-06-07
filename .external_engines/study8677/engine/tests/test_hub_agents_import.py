@@ -2,9 +2,9 @@
 import sys
 import types
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
-from unittest.mock import patch
 
 
 def test_build_refresh_swarm_import_error():

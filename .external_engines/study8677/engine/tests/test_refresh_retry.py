@@ -10,14 +10,12 @@ Genuine transient provider failures (rate limits, 5xx, network, and
 
 from __future__ import annotations
 
-import asyncio
-
 from antigravity_engine.hub.refresh_pipeline import _is_retryable_error
 
 
 def test_bare_wait_for_timeout_is_not_retryable() -> None:
     # asyncio.TimeoutError() and TimeoutError() carry an empty message.
-    assert _is_retryable_error(asyncio.TimeoutError()) is False
+    assert _is_retryable_error(TimeoutError()) is False
     assert _is_retryable_error(TimeoutError()) is False
 
 

@@ -10,8 +10,8 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Sequence
 
 
 def _parse_args(
@@ -52,6 +52,7 @@ def ask_main(argv: Sequence[str] | None = None) -> None:
 
     try:
         import asyncio
+
         from antigravity_engine.hub.pipeline import ask_pipeline
 
         print(asyncio.run(ask_pipeline(workspace, args.question)))
@@ -81,6 +82,7 @@ def refresh_main(argv: Sequence[str] | None = None) -> None:
 
     try:
         import asyncio
+
         from antigravity_engine.hub.pipeline import refresh_pipeline
 
         status = asyncio.run(

@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import List, Optional
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -12,13 +12,13 @@ class MCPServerConfig(BaseSettings):
     transport: str = Field(
         default="stdio", description="Transport type: stdio, http, sse"
     )
-    command: Optional[str] = Field(
+    command: str | None = Field(
         default=None, description="Command to run for stdio transport"
     )
-    args: List[str] = Field(
+    args: list[str] = Field(
         default_factory=list, description="Arguments for the command"
     )
-    url: Optional[str] = Field(default=None, description="URL for http/sse transport")
+    url: str | None = Field(default=None, description="URL for http/sse transport")
     env: dict = Field(
         default_factory=dict, description="Environment variables for the server"
     )

@@ -1,6 +1,6 @@
 import json
 
-from antigravity_engine.config import settings, reset_settings
+from antigravity_engine.config import reset_settings, settings
 from antigravity_engine.mcp_client import MCPClientManager
 from antigravity_engine.memory import MemoryManager
 

@@ -3,9 +3,9 @@
 import importlib.util
 import inspect
 import os
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable
-
+from typing import Any
 
 _SKILLS_CACHE: dict[str, tuple[dict[str, Callable[..., Any]], str]] = {}
 
@@ -40,7 +40,7 @@ def load_skills(agent_tools: dict[str, Callable[..., Any]]) -> str:
     skill_docs: list[str] = []
     discovered_tools: dict[str, Callable[..., Any]] = {}
     verbose = _verbose()
-    
+
     if not skills_dir.exists():
         if verbose:
             print(f"⚠️ Skills directory not found: {skills_dir}")
@@ -53,11 +53,11 @@ def load_skills(agent_tools: dict[str, Callable[..., Any]]) -> str:
     for skill_path in skills_dir.iterdir():
         if not skill_path.is_dir() or skill_path.name.startswith("_") or skill_path.name == "__pycache__":
             continue
-            
+
         skill_name = skill_path.name
         if verbose:
             print(f"   ► Found skill: {skill_name}")
-        
+
         # 1. Load Tools (tools.py)
         tools_file = skill_path / "tools.py"
         if tools_file.exists():
@@ -68,7 +68,7 @@ def load_skills(agent_tools: dict[str, Callable[..., Any]]) -> str:
                 if spec and spec.loader:
                     module = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(module)
-                    
+
                     count = 0
                     for name, obj in inspect.getmembers(module, inspect.isfunction):
                         if not name.startswith("_") and obj.__module__ == module.__name__:
@@ -79,7 +79,7 @@ def load_skills(agent_tools: dict[str, Callable[..., Any]]) -> str:
             except Exception as e:
                 if verbose:
                     print(f"     ❌ Failed to load tools: {e}")
-        
+
         # 2. Load Documentation (SKILL.md)
         doc_file = skill_path / "SKILL.md"
         if doc_file.exists():
@@ -88,7 +88,7 @@ def load_skills(agent_tools: dict[str, Callable[..., Any]]) -> str:
                 if content:
                     skill_docs.append(f"\n--- SKILL: {skill_name} ---\n{content}")
                     if verbose:
-                        print(f"     ✓ Loaded documentation from SKILL.md")
+                        print("     ✓ Loaded documentation from SKILL.md")
             except Exception as e:
                 if verbose:
                     print(f"     ❌ Failed to load docs: {e}")

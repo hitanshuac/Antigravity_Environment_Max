@@ -1,14 +1,13 @@
 import os
-import sys
-import time
-import tempfile
 import subprocess
-from typing import Tuple
+import sys
+import tempfile
+import time
 
 from .base import CodeSandbox, ExecutionResult
 
 
-def _truncate_output(text: str, max_bytes: int) -> Tuple[str, bool]:
+def _truncate_output(text: str, max_bytes: int) -> tuple[str, bool]:
     if max_bytes <= 0:
         return text, False
     encoded = text.encode("utf-8", errors="ignore")

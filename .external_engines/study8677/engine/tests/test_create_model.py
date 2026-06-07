@@ -1,6 +1,5 @@
 """Tests for hub.agents.create_model() LLM backend resolution."""
 import pytest
-
 from antigravity_engine.hub.agents import create_model
 
 

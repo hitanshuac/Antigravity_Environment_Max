@@ -4,7 +4,6 @@ from typing import Any
 from unittest.mock import patch
 
 import requests
-
 from antigravity_engine.sandbox.microsandbox_exec import MicrosandboxSandbox
 
 

@@ -8,7 +8,6 @@ from pathlib import Path
 
 from antigravity_engine.hub.language_adapters.base import FileSemantics, SymbolDef
 
-
 _IMPORT_FROM_RE = re.compile(
     r"\bimport\s+(?:type\s+)?(?:[^;'\"`]|\"[^\"]*\"|'[^']*'|`[^`]*`)*?"
     r"\s+from\s*['\"]([^'\"]+)['\"]",
@@ -276,7 +275,7 @@ class TypeScriptLanguageAdapter:
             return None
 
         variable_match = re.match(
-            rf"(?P<decl>const|let|var)\s+(?P<body>.+)",
+            r"(?P<decl>const|let|var)\s+(?P<body>.+)",
             subject,
         )
         if not variable_match:

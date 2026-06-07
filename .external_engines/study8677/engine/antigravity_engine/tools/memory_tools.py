@@ -1,13 +1,12 @@
 """Memory tools for reading/searching markdown memory files."""
 
-from pathlib import Path
 import subprocess
-from typing import Optional
+from pathlib import Path
 
 from antigravity_engine.config import settings
 
 
-def _resolve_memory_file(memory_file: Optional[str]) -> Path:
+def _resolve_memory_file(memory_file: str | None) -> Path:
     """Resolve target memory file path.
 
     Args:
@@ -21,7 +20,7 @@ def _resolve_memory_file(memory_file: Optional[str]) -> Path:
     return settings.memory_file_path
 
 
-def read_memory_md(max_chars: int = 12000, memory_file: Optional[str] = None) -> str:
+def read_memory_md(max_chars: int = 12000, memory_file: str | None = None) -> str:
     """Read markdown memory content for model inspection.
 
     Args:
@@ -45,7 +44,7 @@ def search_memory_md(
     query: str,
     max_results: int = 20,
     case_insensitive: bool = True,
-    memory_file: Optional[str] = None,
+    memory_file: str | None = None,
 ) -> str:
     """Search markdown memory using ripgrep with a Python fallback.
 

@@ -10,13 +10,13 @@ These tests verify:
 
 import json
 import os
-import pytest
 from pathlib import Path
-from unittest.mock import MagicMock, patch, AsyncMock
-from typing import Dict, Any
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 # Test configuration
-from antigravity_engine.config import settings, MCPServerConfig
+from antigravity_engine.config import MCPServerConfig, settings
 
 
 class TestMCPServerConfig:
@@ -97,7 +97,7 @@ class TestMCPConfigFile:
     )
     def test_config_file_valid_json(self):
         """Test that mcp_servers.json is valid JSON."""
-        with open(self._CONFIG_PATH, "r") as f:
+        with open(self._CONFIG_PATH) as f:
             data = json.load(f)
 
         assert "servers" in data
@@ -109,7 +109,7 @@ class TestMCPConfigFile:
     )
     def test_config_servers_have_required_fields(self):
         """Test that all servers in config have required fields."""
-        with open(self._CONFIG_PATH, "r") as f:
+        with open(self._CONFIG_PATH) as f:
             data = json.load(f)
 
         for server in data["servers"]:
@@ -124,7 +124,7 @@ class TestMCPClientManager:
     def test_import_mcp_client(self):
         """Test that mcp_client module can be imported."""
         try:
-            from antigravity_engine.mcp_client import MCPClientManager, MCPTool, MCPServerConnection
+            from antigravity_engine.mcp_client import MCPClientManager, MCPServerConnection, MCPTool
 
             assert MCPClientManager is not None
             assert MCPTool is not None
@@ -168,9 +168,9 @@ class TestMCPTools:
     def test_import_mcp_tools(self):
         """Test that mcp_tools module can be imported."""
         from antigravity_engine.tools.mcp_tools import (
+            get_mcp_tool_help,
             list_mcp_servers,
             list_mcp_tools,
-            get_mcp_tool_help,
             mcp_health_check,
         )
 
@@ -181,7 +181,7 @@ class TestMCPTools:
 
     def test_list_mcp_servers_no_manager(self):
         """Test list_mcp_servers when manager is not initialized."""
-        from antigravity_engine.tools.mcp_tools import list_mcp_servers, _set_mcp_manager
+        from antigravity_engine.tools.mcp_tools import _set_mcp_manager, list_mcp_servers
 
         # Ensure no manager is set
         _set_mcp_manager(None)
@@ -191,7 +191,7 @@ class TestMCPTools:
 
     def test_list_mcp_tools_no_manager(self):
         """Test list_mcp_tools when manager is not initialized."""
-        from antigravity_engine.tools.mcp_tools import list_mcp_tools, _set_mcp_manager
+        from antigravity_engine.tools.mcp_tools import _set_mcp_manager, list_mcp_tools
 
         _set_mcp_manager(None)
 
@@ -200,7 +200,7 @@ class TestMCPTools:
 
     def test_get_mcp_tool_help_no_manager(self):
         """Test get_mcp_tool_help when manager is not initialized."""
-        from antigravity_engine.tools.mcp_tools import get_mcp_tool_help, _set_mcp_manager
+        from antigravity_engine.tools.mcp_tools import _set_mcp_manager, get_mcp_tool_help
 
         _set_mcp_manager(None)
 
@@ -209,7 +209,7 @@ class TestMCPTools:
 
     def test_mcp_health_check_no_manager(self):
         """Test mcp_health_check when manager is not initialized."""
-        from antigravity_engine.tools.mcp_tools import mcp_health_check, _set_mcp_manager
+        from antigravity_engine.tools.mcp_tools import _set_mcp_manager, mcp_health_check
 
         _set_mcp_manager(None)
 
@@ -222,7 +222,7 @@ class TestMCPToolsMocked:
 
     def test_list_mcp_servers_with_mock_manager(self):
         """Test list_mcp_servers with a mocked manager."""
-        from antigravity_engine.tools.mcp_tools import list_mcp_servers, _set_mcp_manager
+        from antigravity_engine.tools.mcp_tools import _set_mcp_manager, list_mcp_servers
 
         # Create mock manager
         mock_manager = MagicMock()
@@ -259,8 +259,8 @@ class TestMCPToolsMocked:
 
     def test_list_mcp_tools_with_mock_manager(self):
         """Test list_mcp_tools with mocked tools."""
-        from antigravity_engine.tools.mcp_tools import list_mcp_tools, _set_mcp_manager
         from antigravity_engine.mcp_client import MCPTool
+        from antigravity_engine.tools.mcp_tools import _set_mcp_manager, list_mcp_tools
 
         mock_tool = MCPTool(
             name="create_issue",
@@ -313,6 +313,7 @@ class TestMCPClientManagerConfigLoading:
     def test_load_config_filters_disabled_servers(self):
         """Test that disabled servers are filtered out."""
         import tempfile
+
         from antigravity_engine.mcp_client import MCPClientManager
 
         # Create temp config with one enabled, one disabled

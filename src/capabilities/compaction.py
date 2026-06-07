@@ -24,7 +24,7 @@ def apply_sliding_window(messages, limit=10):
     if len(messages) <= limit:
         return messages
     sys_msg = [messages[0]] if messages[0].get("role") == "system" else []
-    
+
     # We want to keep the system message + most recent (limit - len(sys_msg)) messages
     keep_count = limit - len(sys_msg)
     if keep_count <= 0:
@@ -33,13 +33,13 @@ def apply_sliding_window(messages, limit=10):
 
 def compact_context(messages):
     msgs_copy = copy.deepcopy(messages)
-    
+
     # Ensure system prompt is at index 0
     if not msgs_copy or msgs_copy[0].get("role") != "system":
         msgs_copy.insert(0, SYSTEM_PROMPT.copy())
     else:
         msgs_copy[0] = SYSTEM_PROMPT.copy()
-        
+
     msgs_copy = strip_boilerplate(msgs_copy)
     msgs_copy = apply_sliding_window(msgs_copy)
     return msgs_copy

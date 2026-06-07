@@ -24,9 +24,9 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Mapping
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ class MerkleTree:
         }
 
     @classmethod
-    def from_dict(cls, data: Mapping) -> "MerkleTree":
+    def from_dict(cls, data: Mapping) -> MerkleTree:
         modules = {
             module_id: ModuleNode(
                 hash=str(entry.get("hash", "")),

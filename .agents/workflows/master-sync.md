@@ -1,15 +1,43 @@
 ---
-description: A master orchestration workflow that sequentially updates documentation, publishes the showcase, and secures a Git checkpoint.
+description: A master orchestration workflow that sequentially validates, documents, generates assets, versions, and checkpoints the codebase.
 ---
 
 # Master Sync Workflow
 
-<workflow_steps>
-1. Invoke the **Update Docs Workflow** to ensure all `.md` files are strictly synced with the latest Python and SQL codebase.
-2. Invoke the **Publish Showcase Workflow** to generate the final Mermaid architecture diagram, generate a versioned image directly from that Mermaid diagram, and prepare the `README.md` for the showcase.
-3. Invoke the **Secure Checkpoint Workflow** to securely commit and push the updated codebase, images, and documentation to GitHub.
+**Trigger:** Explicit invocation via `/ask run @[.agents/workflows/master-sync.md]`
 
+This is the **top-level orchestrator** for synchronizing the entire codebase. It calls sub-workflows in strict sequential order. Do NOT skip phases.
 
+## Phase 1: Pre-flight Checks
+1. Verify that `.agents/product/templates/` contains all 5 product templates (`01_PRD.md` through `05_TICKETS.md`).
+2. If any template is missing, halt and execute `.agents/workflows/generate-product-docs.md` to populate them.
+3. Run `ruff check .` to verify the codebase passes linting.
 
-</workflow_steps>
+## Phase 2: Test Automation Gate
+1. Execute `.agents/workflows/test-automation.md`.
+2. If any tests fail, execute `.agents/workflows/error-observability.md` to log the failure.
+3. Fix the failing code and re-run tests. Do NOT proceed until all tests pass.
 
+## Phase 3: Update Documentation
+1. Execute `.agents/workflows/update-docs.md`.
+2. This will scan `.agents/` and `src/` to synchronize `README.md`, `HANDOVER.md`, and `BOOTSTRAP.MD` with the current codebase state.
+
+## Phase 4: Regenerate Architecture Diagrams
+1. Execute `.agents/workflows/generate-architecture.md`.
+2. This will update the Python diagram scripts to reflect the current architecture, regenerate the base PNG, apply the composite watermark, and optionally run the AI styling pass.
+3. The output overwrites `docs/assets/architecture_diagram.png`.
+
+## Phase 5: Publish Showcase
+1. Execute `.agents/workflows/publish-showcase.md`.
+2. This verifies the documentation assets (PNG + Mermaid) are present and correctly referenced in `README.md`.
+3. Present all proposed changes to the user for final approval.
+
+## Phase 6: Semantic Release
+1. Execute `.agents/workflows/semantic-release.md`.
+2. Ensure the commit message follows Conventional Commits (`feat:`, `fix:`, `docs:`, etc.).
+3. The CI/CD pipeline in `.github/workflows/release.yml` will handle the version bump and changelog generation.
+
+## Phase 7: Secure Checkpoint
+1. Execute `.agents/workflows/secure-checkpoint.md`.
+2. Stage all files (`git add .`), commit with the Conventional Commit message, and push to `origin main`.
+3. Confirm to the user that all changes are permanently secured on GitHub.

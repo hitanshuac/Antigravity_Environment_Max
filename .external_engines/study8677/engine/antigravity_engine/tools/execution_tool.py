@@ -1,10 +1,9 @@
-from typing import Optional
 import os
 
 from antigravity_engine.sandbox.factory import get_sandbox
 
 
-def run_python_code(code: str, timeout: Optional[int] = None) -> str:
+def run_python_code(code: str, timeout: int | None = None) -> str:
     """
     Execute Python code using the configured sandbox.
 

@@ -3,7 +3,6 @@ from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
 
-
 def test_build_ask_swarm_without_mcp(tmp_path: Path) -> None:
     """build_ask_swarm works normally when mcp_tools is None."""
     from antigravity_engine.hub.agents import build_ask_swarm
@@ -120,9 +119,9 @@ def test_ask_pipeline_mcp_disabled(tmp_path: Path, monkeypatch) -> None:
         new_callable=AsyncMock,
         return_value=mock_result,
     ):
-        from antigravity_engine.hub.pipeline import ask_pipeline
-
         import asyncio
+
+        from antigravity_engine.hub.pipeline import ask_pipeline
 
         result = asyncio.run(ask_pipeline(tmp_path, "test question"))
 
@@ -164,9 +163,9 @@ def test_ask_pipeline_mcp_enabled_without_runtime_opt_in(tmp_path: Path, monkeyp
         "antigravity_engine.mcp_client.MCPClientManager.initialize",
         new_callable=AsyncMock,
     ) as mock_mcp_init:
-        from antigravity_engine.hub.pipeline import ask_pipeline
-
         import asyncio
+
+        from antigravity_engine.hub.pipeline import ask_pipeline
 
         result = asyncio.run(ask_pipeline(tmp_path, "test question"))
 

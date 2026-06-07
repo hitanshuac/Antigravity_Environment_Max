@@ -1,9 +1,8 @@
 """Tests for ag init --force flag."""
 from pathlib import Path
 
-from typer.testing import CliRunner
-
 from ag_cli.cli import app
+from typer.testing import CliRunner
 
 runner = CliRunner()
 

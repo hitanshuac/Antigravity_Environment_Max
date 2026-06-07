@@ -9,8 +9,6 @@ import re
 import shutil
 import subprocess
 from pathlib import Path
-from typing import Dict, List
-
 
 VALID_MODES = {"quick", "full"}
 VALID_SANDBOX_RUNTIMES = {"local", "microsandbox"}
@@ -47,7 +45,7 @@ def _count_entries(path: Path) -> int:
     return sum(1 for _ in path.rglob("*"))
 
 
-def _upsert_env_var(lines: List[str], key: str, value: str) -> List[str]:
+def _upsert_env_var(lines: list[str], key: str, value: str) -> list[str]:
     """Set or append an env variable line.
 
     Args:
@@ -60,7 +58,7 @@ def _upsert_env_var(lines: List[str], key: str, value: str) -> List[str]:
     """
 
     replaced = False
-    updated: List[str] = []
+    updated: list[str] = []
     prefix_pattern = re.compile(rf"^\s*{re.escape(key)}\s*=")
 
     for line in lines:
@@ -309,7 +307,7 @@ def main() -> int:
     if args.mode == "full":
         next_steps.append("review .context/agent_runtime_profile.md")
 
-    result: Dict[str, object] = {
+    result: dict[str, object] = {
         "project_name": args.project_name,
         "project_path": str(target_path),
         "mode": args.mode,

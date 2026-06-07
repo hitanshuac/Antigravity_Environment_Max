@@ -1,9 +1,8 @@
 """Integration tests for ag report and ag log-decision commands."""
 from pathlib import Path
 
-from typer.testing import CliRunner
-
 from ag_cli.cli import app
+from typer.testing import CliRunner
 
 runner = CliRunner()
 

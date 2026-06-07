@@ -1,5 +1,6 @@
 import time
 
+
 def deep_research(topic: str) -> str:
     """
     Performs a deep research analysis on the given topic.

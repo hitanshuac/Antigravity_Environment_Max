@@ -12,30 +12,30 @@ to work without changes.
 """
 from __future__ import annotations
 
-# Re-export everything from the split modules.
-from antigravity_engine.hub.refresh_pipeline import (  # noqa: F401
-    refresh_pipeline,
-    _format_scan_report,
-    _get_head_sha,
-    _build_non_code_indexes,
-    _build_scan_payload,
-    _build_fallback_conventions,
-)
-
 from antigravity_engine.hub.ask_pipeline import (  # noqa: F401
-    ask_pipeline,
-    _read_context_file,
     _build_ask_context,
-    _is_structure_query,
     _build_graph_skill_context,
     _build_retrieval_semantic_answer,
     _build_timeout_fallback_answer,
+    _extract_blueprints_from_app,
+    _extract_identifiers,
+    _find_call_sites,
+    _find_function_defs,
+    _find_shell_call_sites,
+    _find_shell_function_defs,
+    _is_structure_query,
     _iter_python_files,
     _iter_shell_files,
-    _extract_identifiers,
-    _find_function_defs,
-    _find_call_sites,
-    _find_shell_function_defs,
-    _find_shell_call_sites,
-    _extract_blueprints_from_app,
+    _read_context_file,
+    ask_pipeline,
+)
+
+# Re-export everything from the split modules.
+from antigravity_engine.hub.refresh_pipeline import (  # noqa: F401
+    _build_fallback_conventions,
+    _build_non_code_indexes,
+    _build_scan_payload,
+    _format_scan_report,
+    _get_head_sha,
+    refresh_pipeline,
 )
