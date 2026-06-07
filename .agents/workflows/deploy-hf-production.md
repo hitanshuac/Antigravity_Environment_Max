@@ -26,16 +26,7 @@ This workflow orchestrates the entire deployment pipeline. Every time the code i
 2. This will synthesize `retrospective.md`, `walkthrough.md`, and `implementation_plan.md` into `README.md`.
 3. In `README.md`, ensure **both** the recruiter-facing static PNG and the technical Mermaid flow are visible:
    - Recruiter Showcase: `![Architecture Diagram](docs/assets/architecture_diagram.png)` at the top of the file.
-   - Technical Flowchart: Mermaid diagram in the interaction section.
-4. Stage, commit, and push all modifications to GitHub first.
-
-## Step 5: Push to Hugging Face Spaces (Agent Automation)
-1. **Agent Instruction:** Do NOT ask the human to run terminal commands. You are the executing agent.
-2. If `HF_SPACE_REPO` or `HF_TOKEN` are not known, ask the human user to provide them in the chat.
-3. Once you have the credentials, use your terminal execution tools to temporarily set the environment variables and run the upload script autonomously:
-   ```bash
-   $env:HF_SPACE_REPO="<provided-repo>"
-   $env:HF_TOKEN="<provided-token>"
-   python upload_to_hf.py
-   ```
-4. Verify that the build starts successfully in the Hugging Face Space.
+## Step 5: Push to Hugging Face Spaces (CI/CD)
+1. Ensure the `.github/workflows/deploy_hf.yml` action exists in the repository.
+2. Do NOT run `upload_to_hf.py` locally. It requires secret tokens.
+3. Instead, commit and push all changes to GitHub (`origin/main`). The GitHub Action will automatically trigger the `upload_to_hf.py` script using the repository's securely stored `HF_TOKEN`.
