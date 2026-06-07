@@ -11,6 +11,7 @@ def test_llm_judge_good_response():
     # Assert that the judge recognizes a high-quality, helpful response
     assert score >= 4
 
+
 def test_llm_judge_bad_response():
     system_prompt = "You are a helpful assistant."
     user_query = "How do I exit vim?"

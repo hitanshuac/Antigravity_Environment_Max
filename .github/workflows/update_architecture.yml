@@ -18,11 +18,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Render Mermaid to PNG
-        uses: mermaid-js/mermaid-cli@v3.0.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          input: README.md
-          output: docs/assets/architecture_diagram.png
+          node-version: '20'
+
+      - name: Install Mermaid CLI
+        run: npm install -g @mermaid-js/mermaid-cli
+
+      - name: Render Mermaid to PNG
+        run: mmdc -i README.md -o docs/assets/architecture_diagram.png
 
       - name: Commit and Push Updated Architecture Image
         run: |

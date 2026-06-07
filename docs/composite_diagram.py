@@ -15,7 +15,7 @@ def create_composite(foreground_path, background_path, output_path):
     for item in data:
         # Check if pixel is close to #0D1117 (13, 17, 23)
         if abs(item[0] - 13) < 15 and abs(item[1] - 17) < 15 and abs(item[2] - 23) < 15:
-            new_data.append((255, 255, 255, 0)) # Transparent
+            new_data.append((255, 255, 255, 0))  # Transparent
         else:
             new_data.append(item)
     fg.putdata(new_data)
@@ -67,12 +67,13 @@ def create_composite(foreground_path, background_path, output_path):
     y = bg.height - text_height - margin
 
     # Draw subtle shadow then text
-    draw.text((x+2, y+2), watermark_text, font=font, fill=(0, 0, 0, 150))
+    draw.text((x + 2, y + 2), watermark_text, font=font, fill=(0, 0, 0, 150))
     draw.text((x, y), watermark_text, font=font, fill=(255, 255, 255, 200))
 
     # Save final output
     bg.save(output_path, "PNG")
     print(f"Successfully generated composite diagram at {output_path}")
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:

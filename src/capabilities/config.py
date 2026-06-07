@@ -4,6 +4,7 @@ import os
 class MissingConfigurationError(Exception):
     pass
 
+
 def load_settings():
     api_key = os.getenv("API_KEY")
     if not api_key:

@@ -6,8 +6,8 @@ from src.capabilities.validation import validate_and_route
 def test_pydantic_dlq(tmp_path):
     records = [
         {"id": 1, "payload": "A", "tier": "gold"},
-        {"id": "bad", "payload": "B", "tier": "silver"}, # Malformed ID
-        {"id": 3, "payload": "C", "tier": "bronze"}
+        {"id": "bad", "payload": "B", "tier": "silver"},  # Malformed ID
+        {"id": 3, "payload": "C", "tier": "bronze"},
     ]
 
     valid, quarantined = validate_and_route(records, quarantine_dir=str(tmp_path))

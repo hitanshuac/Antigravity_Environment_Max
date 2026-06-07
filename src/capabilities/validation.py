@@ -9,6 +9,7 @@ class TelemetryRecord(BaseModel):
     payload: str
     tier: str
 
+
 def validate_and_route(records_data, quarantine_dir="data"):
     valid_records = []
     quarantined = []
@@ -18,10 +19,7 @@ def validate_and_route(records_data, quarantine_dir="data"):
             record = TelemetryRecord(**data)
             valid_records.append(record.model_dump())
         except ValidationError as e:
-            quarantined.append({
-                "raw_data": data,
-                "error": str(e)
-            })
+            quarantined.append({"raw_data": data, "error": str(e)})
 
     if quarantined:
         os.makedirs(quarantine_dir, exist_ok=True)

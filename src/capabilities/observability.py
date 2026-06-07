@@ -11,8 +11,8 @@ def log_error(error, component, error_logs_path="data/error_logs.json"):
         "timestamp": datetime.utcnow().isoformat(),
         "error_type": type(error).__name__,
         "component": component,
-        "stack_trace_summary": traceback.format_exc()[-500:], # keep it compressed
-        "status": "UNRESOLVED"
+        "stack_trace_summary": traceback.format_exc()[-500:],  # keep it compressed
+        "status": "UNRESOLVED",
     }
 
     with open(error_logs_path, "a") as f:

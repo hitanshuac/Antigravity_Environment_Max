@@ -7,7 +7,7 @@ def test_error_logging(tmp_path):
     log_file = tmp_path / "test_errors.json"
 
     try:
-        1 / 0
+        _ = 1 / 0
     except ZeroDivisionError as e:
         log_error(e, "test_component", str(log_file))
 

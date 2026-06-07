@@ -1,4 +1,3 @@
-
 import duckdb
 
 
@@ -19,6 +18,7 @@ def init_duckdb(db_path=":memory:"):
     """)
     return conn
 
+
 def ingest_data_idempotent(conn, records):
     """
     Ingests records into DuckDB idempotently.
@@ -27,10 +27,13 @@ def ingest_data_idempotent(conn, records):
     """
     conn.execute("BEGIN TRANSACTION")
     try:
-        conn.executemany("""
-            INSERT OR REPLACE INTO telemetry (id, payload) 
+        conn.executemany(
+            """
+            INSERT OR REPLACE INTO telemetry (id, payload)
             VALUES (?, ?)
-        """, records)
+        """,
+            records,
+        )
         conn.execute("COMMIT")
     except Exception as e:
         conn.execute("ROLLBACK")
