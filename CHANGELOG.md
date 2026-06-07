@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.3.0 (2026-06-07)
+
+### Features
+
+- **workflow**: Establish autonomous secret provisioning via gh cli
+  ([`21cdeab`](https://github.com/hitanshuac/Antigravity_Environment_Max/commit/21cdeab0c638422461e41891bab62991af55f331))
+
+
 ## v1.2.2 (2026-06-07)
 
 ### Bug Fixes
