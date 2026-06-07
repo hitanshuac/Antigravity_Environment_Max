@@ -39,5 +39,5 @@ This is the **top-level orchestrator** for synchronizing the entire codebase. It
 
 ## Phase 7: Secure Checkpoint
 1. Execute `.agents/workflows/secure-checkpoint.md`.
-2. Stage all files (`git add .`), commit with the Conventional Commit message, and push to `origin main`.
+2. This invokes the Python Git Manager (`src/capabilities/git_manager.py`) to safely stage, commit, and push changes while enforcing error observability.
 3. Confirm to the user that all changes are permanently secured on GitHub.
