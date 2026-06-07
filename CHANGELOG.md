@@ -2,6 +2,29 @@
 
 <!-- version list -->
 
+## v1.1.0 (2026-06-07)
+
+### Code Style
+
+- Apply direct AI redrawing with strict spelling constraints
+  ([`36072d4`](https://github.com/hitanshuac/Antigravity_Environment_Max/commit/36072d491116dedcd3e3c07aad439ba473c29e25))
+
+### Documentation
+
+- **sync**: Consolidate docs workflows and refine orchestrator
+  ([`48e6596`](https://github.com/hitanshuac/Antigravity_Environment_Max/commit/48e65968b75a07a448ee49000d5a569895150a23))
+
+### Features
+
+- Generalize diagram generation pipeline
+  ([`330824a`](https://github.com/hitanshuac/Antigravity_Environment_Max/commit/330824a7b0204ae1a67d6783d6e5027218e4075c))
+
+### Refactoring
+
+- Migrate architecture diagram generation to D2
+  ([`e3d9fa0`](https://github.com/hitanshuac/Antigravity_Environment_Max/commit/e3d9fa0db7375431c34d53dd483655a05a214524))
+
+
 ## v1.0.0 (2026-06-07)
 
 - Initial Release
