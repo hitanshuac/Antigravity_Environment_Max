@@ -42,6 +42,13 @@ pip install -r requirements.txt
 * **SQL Standards:** Write-Ahead Logging and `INSERT OR REPLACE` idempotency via DuckDB.
 * **Hugging Face Standards:** Zero-cost offsite WebUI routing deployment constraints.
 
+### Core Python APIs (`src/capabilities/`)
+* **Context Compaction (`compaction.py`):** Inline system prompt injection and boilerplate prefix stripping.
+* **Database Operations (`database.py`):** Configures WAL limits and executes idempotent `INSERT OR REPLACE` transactions.
+* **AI Evaluation (`llm_judge.py`):** Fallback logic for probabilistic LLM-as-a-Judge evaluations.
+* **Observability (`observability.py`):** AST-compressed error logging to `data/error_logs.json`.
+* **Data Validation (`validation.py`):** Safely isolates malformed Pydantic records to a Dead-Letter Queue without crashing.
+
 ### Product & Systems Design (`.agents/product/`)
 * **Product Templates:** Pre-defined frameworks for PRDs, Technical Architecture (TAD), Security Specs, Frontend Specs, and Feature Ticket Lists to guarantee deterministic AI output.
 * **Architecture Decision Records (ADRs):** Immutable log of architectural choices (`.agents/architecture/adrs/`).
