@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.6.0 (2026-06-14)
+
+### Features
+
+- Explicitly include Tier 3 Compliance in pre-flight checklist
+  ([`762a186`](https://github.com/hitanshuac/Antigravity_Environment_Max/commit/762a1860e3bbbe04d4490a49a68f42273eb9fdff))
+
+### Refactoring
+
+- Remove legacy .antigravity data plane references
+  ([`60162ad`](https://github.com/hitanshuac/Antigravity_Environment_Max/commit/60162ada70cf2bb1f474240dad6978385cc8e31c))
+
+
 ## v1.5.0 (2026-06-14)
 
 ### Chores
