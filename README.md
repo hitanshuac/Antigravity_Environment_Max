@@ -57,14 +57,17 @@ python -m pytest src/tests/ -v --tb=short
 
 ### Governance Rules (`.agents/rules/`)
 * **12-Factor Governance:** Enforces all 12 factors of stateless processes and BYOK configuration.
-* **Testing Standards:** Mandates the Test Pyramid (Unit → Integration → E2E) and prohibits untested code.
-* **Linting Standards:** Enforces exponential-speed static analysis and formatting using Ruff.
+* **Defensive Programming:** Pydantic schema-first data contracts and fail-fast operations to prevent silent data loss.
+* **Rule Conflict Resolution:** 5-tier safety hierarchy ensuring Data Integrity (Tier 0) always overrides Style/Compliance (Tiers 3-4).
+* **Testing Standards:** Mandates the Test Pyramid, state-aware integration tests, and fixture verification gates.
+* **Linting & Code Quality:** Enforces exponential-speed static analysis via Ruff, and explicit enterprise-grade code structures.
 * **No Unauthorized Deletions:** Strictly forbids destructive actions without manual approval, with semantic merge exemptions.
-* **Error Observability:** Mandatory error interception and AST compression via jCodeMunch.
+* **Error Observability:** Mandatory error interception, pre-write verification gates, and AST compression via jCodeMunch.
 * **Context Compaction & Router Alignment:** Strict token conservation and payload mutation for Agentic AI.
-* **Data Validation:** Idempotent DLQ routing via Pydantic.
+* **Data Validation:** Idempotent DLQ routing and robust schema enforcement for local JSON files.
 * **SQL Standards:** Write-Ahead Logging and `INSERT OR REPLACE` idempotency via DuckDB.
-* **Hugging Face Standards:** Zero-cost offsite WebUI routing deployment constraints.
+* **SRE Standard Operating Procedure:** Rhythmic Inner and Outer loops enforcing deterministic verification after every iteration.
+* **Hugging Face & SAST Standards:** Zero-cost offsite WebUI routing deployment and OPSEC-sanitized remote evaluation compliance.
 
 ### Core Python APIs (`src/capabilities/`)
 * **Context Compaction (`compaction.py`):** Inline system prompt injection and boilerplate prefix stripping.
@@ -88,10 +91,10 @@ python -m pytest src/tests/ -v --tb=short
 * **Pipeline Architect:** Designs minimalist, fault-tolerant ETL pipelines using standard Python.
 
 ### Automated Workflows (`.agents/workflows/`)
-* **CI/CD & Sync:** `master-sync` (Conversational Harvesting), `update-docs`, `publish-showcase`, `secure-checkpoint`, `semantic-release`
+* **CI/CD & Sync:** `master-sync` (Conversational Harvesting), `update-docs`, `publish-showcase`, `secure-checkpoint`, `semantic-release`, `sync-upstream`
 * **Universal DevOps Deployer:** `deploy-hf-production` (Dockerizes and deploys any Node, Go, Rust, or Python codebase natively to Hugging Face via Git).
 * **Security & Quality:** `security-sast` (Semgrep), `lint` (Ruff), `test-automation` (Framework Agnostic Stack Detection)
-* **Product & Planning:** `generate-product-docs`
+* **Product & Planning:** `generate-product-docs`, `code-generation-preflight`
 * **Architecture & Assets:** `generate-diagrams`
 * **Data Engineering:** `daily-ingestion`, `build-etl`, `error-recovery`
 * **Bootstrapping:** `bootstrap` (Phase 0 Self-Upgrader), `git-discovery-preflight`, `merge-conflict-resolution`

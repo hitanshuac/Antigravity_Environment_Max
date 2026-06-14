@@ -78,6 +78,13 @@ When generating code, scaffolding architecture, or debugging issues within this 
 - In production, logs are captured by the runtime environment (Docker, HF Spaces). The application only writes to `stdout`/`stderr`.
 - Document immutable architectural decisions natively in ADRs (`.agents/architecture/adrs/`).
 
+### Factor XI Addendum: Lightweight Contexts
+When 12-Factor Factor XI conflicts with project constraints that prohibit databases (see `rule-conflict-resolution.md` for priority hierarchy):
+- Logs MAY be written to local JSON files as a fallback, but MUST still follow the Pydantic schema validation mandate from `data-validation.md` Rule 4 and `defensive-programming.md` Rule 1.
+- The JSON log file is treated as a "poor man's event stream" and must be **append-only**. The agent must NEVER truncate, overwrite, or reset existing log entries.
+- Before writing, a `.bak` backup must be created per `error-recovery.md` Step 3b.
+- After writing, the Pre-Write Verification gate (`error-observability.md` Step 1.5) must confirm data integrity.
+
 ## Factor XII: Admin Processes
 *Run admin/management tasks as one-off processes.*
 - Database migrations, one-time data fixes, and diagnostic scripts must be run as isolated one-off commands, not baked into the application startup.
