@@ -10,7 +10,7 @@ This rule governs all testing practices across the Agentic Environment. It enfor
 ## 2. Test Pyramid Enforcement
 - **Unit Tests** must form the majority (~70%) of the test suite. They test pure logic in isolation with mocked dependencies.
 - **Integration Tests** (~20%) test boundaries between components (e.g., API → database, validator → DLQ).
-- **End-to-End Tests** (~10%) test the full user-facing flow. These are the most expensive and should be used sparingly.
+- **End-to-End Tests** (~10%) test the full user-facing flow. These are the most expensive and MUST be used sparingly.
 
 ## 2.5 State-Aware Integration Tests (Mandatory for I/O)
 
@@ -58,5 +58,5 @@ This rule governs all testing practices across the Agentic Environment. It enfor
 - After 3 failed debugging iterations on the same test, the agent must flag it for manual user review and move on.
 
 ## 7. Anti-Solipsism Verification (Human Testing)
-- **Rule:** Never rely solely on internal, solipsistic verification (reading your own terminal outputs). 
+- **Rule:** Never rely solely on internal, solipsistic verification (reading your own terminal outputs).
 - Always explicitly provide the human user with the exact, step-by-step UI and CLI testing commands required to run and test the full-stack system locally (e.g., how to start the backend, how to start the frontend, what URL to open) upon completion of any task.
